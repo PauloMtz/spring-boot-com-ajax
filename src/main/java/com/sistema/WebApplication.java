@@ -20,8 +20,17 @@ public class WebApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		SocialMetaTag og = service.getOpenGraphByUrl("https://www.pichau.com.br/headset-razer-kraken-x-lite-audio-7-1-preto-rz04-02950100-r381-razer");
-		System.out.println(og.toString());
+		SocialMetaTag tag = service
+			.getSocialMetaTagByUrl(
+				"https://www.nuuvem.com/br-pt/item/exit-the-gungeon"
+			);
+		System.out.println(tag.toString());
+
+		/*SocialMetaTag twitter = service
+			.getTwitterCardByUrl(
+				"https://www.pichau.com.br/monitor-gamer-mancer-horizon-z21-21-45-pol-va-full-hd-1ms-75hz-freesync-g-sync-vga-hdmi-mcr-hzn21-bl1"
+			);
+		System.out.println(twitter.toString());*/
 	}
 
 }

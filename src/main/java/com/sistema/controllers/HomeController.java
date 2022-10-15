@@ -15,4 +15,9 @@ public class HomeController {
     public String login() {
         return "/promo-list";
     }
+
+    @GetMapping("/sites")
+    public String sites() {
+        return "/links-sites-validos";
+    }
 }

@@ -8,6 +8,9 @@ $("#linkPromocao").on("change", function() {
             cache: false,
             success: function(dados) {
                 console.log(dados);
+                $("#titulo").val(dados.title);
+                $("#site").text(dados.site.replace("@", ""));
+                $("#linkImagem").attr("src", dados.image);
             }
         })
     }

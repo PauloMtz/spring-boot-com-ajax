@@ -18,6 +18,10 @@ $("#form-add-promo").submit(function(event) {
         method: "POST",
         url: "/promocao/save",
         data: promo,
+        beforeSend: function() {
+            $("#form-add-promo").hide();
+            $("#loader-form").addClass("loader").show();
+        },
         success: function() {
             $("#form-add-promo").each(function() {
                 this.reset(); // limpa os campos do formulário
@@ -29,6 +33,12 @@ $("#form-add-promo").submit(function(event) {
         error: function(xhr) {
             console.log(">>> erro: ", xhr.responseText);
             $("#alert").addClass("alert alert-danger").text("Não foi possível cadastrar a promoção.");
+        },
+        complete: function() {
+            $("#loader-form").fadeOut(800, function() {
+                $("#form-add-promo").fadeIn(250);
+                $("#loader-form").removeClass("loader");
+            })
         }
     })
 })

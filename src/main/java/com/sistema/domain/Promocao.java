@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
@@ -22,9 +24,11 @@ public class Promocao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Preencha o campo título")
     @Column(name = "titulo", nullable = false)
     private String titulo;
 
+    @NotBlank(message = "Preencha o campo de link")
     @Column(name = "link_promocao", nullable = false)
     private String linkPromocao;
 
@@ -37,6 +41,7 @@ public class Promocao {
     @Column(name = "link_imagem", nullable = false)
     private String linkImagem;
 
+    @NotNull(message = "Preencha o campo preço")
     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     @Column(name = "preco", nullable = false)
     private BigDecimal preco;
@@ -47,6 +52,7 @@ public class Promocao {
     @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
 
+    @NotNull(message = "Selecione uma categoria")
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;

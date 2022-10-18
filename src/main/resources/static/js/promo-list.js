@@ -58,3 +58,23 @@ function loadByScrollBar(numPage) {
         }
     })
 }
+
+// adicionar likes
+// pega qualquer botão que tenha id = likes-btn-
+$(document).on("click", "button[id*='likes-btn-']", function() {
+    // pega $(this) button com atributo id, separado por traço e pega o indice 2
+    var id = $(this).attr("id").split("-")[2];
+
+    //console.log(">>> Id: ", id);
+
+    $.ajax({
+        method: "POST",
+        url: "/promocao/like/" + id,
+        success: function(response) {
+            $("#likes-count-" + id).text(response);
+        },
+        error: function(xhr) {
+            alert("Erro " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+});

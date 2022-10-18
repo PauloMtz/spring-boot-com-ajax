@@ -27,7 +27,7 @@
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" th:href="@{/promocao/add}">Adicionar Promoção</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/lista}">Promoções</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/promocao/list}">Promoções</a></li>
                 <li class="nav-item"><a class="nav-link" th:href="@{/sites}">Sites</a></li>
             </ul>
         </div>
@@ -46,6 +46,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
-<script th:replace=":: js"></script>
+<script th:src="@{/js/promo-add.js}"></script>
 </body>
 </html>

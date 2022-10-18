@@ -11,11 +11,6 @@ public class HomeController {
         return "redirect:/promocao/add";
     }
 
-    @GetMapping("/lista")
-    public String login() {
-        return "/promo-list";
-    }
-
     @GetMapping("/sites")
     public String sites() {
         return "/links-sites-validos";

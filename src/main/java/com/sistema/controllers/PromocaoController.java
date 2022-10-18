@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sistema.domain.Categoria;
 import com.sistema.domain.Promocao;
@@ -46,6 +47,14 @@ public class PromocaoController {
         Pageable paginacao = PageRequest.of(0, 4, sort);
         model.addAttribute("promocoes", promocaoRepository.findAll(paginacao));
         return "promo-list";
+    }
+
+    @GetMapping("/list/scroll")
+    public String listaCards(@RequestParam(name = "page", defaultValue = "1") int page, ModelMap model) {
+        Sort sort = Sort.by("dataCadastro").descending();
+        Pageable paginacao = PageRequest.of(page, 4, sort);
+        model.addAttribute("promocoes", promocaoRepository.findAll(paginacao));
+        return "fragments/promo-card";
     }
 
     @PostMapping("/save")

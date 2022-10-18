@@ -8,7 +8,7 @@ public class HomeController {
     
     @GetMapping("/")
     public String index() {
-        return "redirect:/promocao/add";
+        return "redirect:/promocao/list";
     }
 
     @GetMapping("/sites")

@@ -10,6 +10,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -41,7 +43,8 @@ public class PromocaoController {
     @GetMapping("/list")
     public String listaOfertas(ModelMap model) {
         Sort sort = Sort.by("dataCadastro").descending();
-        model.addAttribute("promocoes", promocaoRepository.findAll(sort));
+        Pageable paginacao = PageRequest.of(0, 4, sort);
+        model.addAttribute("promocoes", promocaoRepository.findAll(paginacao));
         return "promo-list";
     }
 

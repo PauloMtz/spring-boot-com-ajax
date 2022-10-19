@@ -72,10 +72,18 @@ public class PromocaoController {
     }
 
     @GetMapping("/list/scroll")
-    public String listaCards(@RequestParam(name = "page", defaultValue = "1") int page, ModelMap model) {
+    public String listaCards(@RequestParam(name = "page", defaultValue = "1") int page, 
+        @RequestParam(name = "site", defaultValue = "") String site, ModelMap model) {
+        
         Sort sort = Sort.by("dataCadastro").descending();
         Pageable paginacao = PageRequest.of(page, 4, sort);
-        model.addAttribute("promocoes", promocaoRepository.findAll(paginacao));
+
+        if (site.isEmpty()) {
+            model.addAttribute("promocoes", promocaoRepository.findAll(paginacao));
+        } else {
+            model.addAttribute("promocoes", promocaoRepository.findBySite(site, paginacao));
+        }
+
         return "fragments/promo-card";
     }
 

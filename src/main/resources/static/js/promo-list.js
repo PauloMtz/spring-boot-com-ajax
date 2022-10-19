@@ -27,11 +27,15 @@ $(window).scroll(function() {
 });
 
 function loadByScrollBar(numPage) {
+    // pega o valor do campo de input
+    var site = $("#autocomplete-input").val();
+
     $.ajax({
         method: "GET",
         url: "/promocao/list/scroll",
         data: {
-            page: numPage
+            page: numPage,
+            site: site
         },
         beforeSend: function() {
             $("#loader-img").show();

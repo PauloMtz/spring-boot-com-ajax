@@ -59,6 +59,51 @@ function loadByScrollBar(numPage) {
     })
 }
 
+// autocomplete
+$("#autocomplete-input").autocomplete({
+    source: function(request, response) {
+        $.ajax({
+            method: "GET",
+            url: "/promocao/site",
+            data: {
+                termo: request.term
+            },
+            success: function(result) {
+                response(result);
+            }
+        });
+    }
+});
+
+// quando clicar no botão da pesquisa
+$("#autocomplete-submit").on("click", function() {
+    // pega o valor do campo de input
+    var site = $("#autocomplete-input").val();
+
+    $.ajax({
+        method: "GET",
+        url: "/promocao/site/list",
+        data: {
+            site: site
+        },
+        beforeSend: function() {
+            numPage = 0;
+            $("#fim-btn").hide();
+            $(".row").fadeOut(500, function() {
+                $(this).empty(); // limpa o que estiver em $(".row")
+            });
+        },
+        success: function(response) {
+            $(".row").fadeIn(250, function() {
+                $(this).append(response); // acrescenta a resposta em $(".row")
+            });
+        },
+        error: function(xhr) {
+            alert("Erro " + xhr.status + ": " + xhr.statusText);
+        }
+    });
+});
+
 // adicionar likes
 // pega qualquer botão que tenha id = likes-btn-
 $(document).on("click", "button[id*='likes-btn-']", function() {

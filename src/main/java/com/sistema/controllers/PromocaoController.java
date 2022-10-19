@@ -42,6 +42,20 @@ public class PromocaoController {
     @Autowired
     private PromocaoRepository promocaoRepository;
 
+    @GetMapping("/site")
+    public ResponseEntity<?> autocompleteByTermo(@RequestParam("termo") String termo) {
+        List<String> sites = promocaoRepository.findSiteByTermo(termo);
+        return ResponseEntity.ok(sites);
+    }
+
+    @GetMapping("/site/list")
+    public String listarPorSite(@RequestParam("site") String site, ModelMap model) {
+        Sort sort = Sort.by("dataCadastro").descending();
+        Pageable paginacao = PageRequest.of(0, 4, sort);
+        model.addAttribute("promocoes", promocaoRepository.findBySite(site, paginacao));
+        return "fragments/promo-card";
+    }
+
     @PostMapping("/like/{id}")
     public ResponseEntity<?> addLike(@PathVariable("id") Long id) {
         promocaoRepository.updateSomarLikes(id);

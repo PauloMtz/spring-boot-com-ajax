@@ -1,5 +1,6 @@
 package com.sistema.services;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -48,6 +49,13 @@ public class PromocaoDatatableService {
     private Page<Promocao> queryBy(String search, PromocaoRepository repository, Pageable pageable) {
         if (search.isEmpty()) {
             return repository.findAll(pageable);
+        }
+
+        // ver site https://regex101.com
+        // valores de 0 a 9 com ponto ou vírgula com 0 a 9 depois da vírgula e 2 casas
+        if (search.matches("^[0-9]+([.,][0-9]{2})?$")) {
+            search = search.replace(",", "."); // se digitar ponto, troca por vírgula
+            return repository.findByPreco(new BigDecimal(search), pageable);
         }
 
         return repository.findByTituloOrSite(search, pageable);

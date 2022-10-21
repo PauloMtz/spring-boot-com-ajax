@@ -5,11 +5,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 
+import com.sistema.domain.Promocao;
 import com.sistema.repositories.PromocaoRepository;
 
 public class PromocaoDatatableService {
@@ -22,26 +24,32 @@ public class PromocaoDatatableService {
     public Map<String, Object> execute(PromocaoRepository repository,
         HttpServletRequest request) {
 
-            int start = Integer.parseInt(request.getParameter("start"));
-            int length = Integer.parseInt(request.getParameter("length"));
-            int draw = Integer.parseInt(request.getParameter("draw"));
+        int start = Integer.parseInt(request.getParameter("start"));
+        int length = Integer.parseInt(request.getParameter("length"));
+        int draw = Integer.parseInt(request.getParameter("draw"));
 
-            int current = currentPage(start, length);
-            String column = columnName(request);
-            Sort.Direction direction = ordernarPor(request);
+        int current = currentPage(start, length);
+        String column = columnName(request);
+        Sort.Direction direction = ordernarPor(request);
 
-            Pageable pageable = PageRequest.of(current, length, direction, column);
+        Pageable pageable = PageRequest.of(current, length, direction, column);
+        Page<Promocao> page = queryBy(repository, pageable);
 
-            Map<String, Object> json = new LinkedHashMap<>();
-            json.put("draw", draw);
-            json.put("recordsTotal", 0);
-            json.put("recordsFiltered", 0);
-            json.put("data", null);
+        Map<String, Object> json = new LinkedHashMap<>();
+        json.put("draw", draw);
+        json.put("recordsTotal", page.getTotalElements());
+        json.put("recordsFiltered", page.getTotalElements());
+        json.put("data", page.getContent());
 
-            return json;
-        }
+        return json;
+    }
+
+    private Page<Promocao> queryBy(PromocaoRepository repository, Pageable pageable) {
+        return repository.findAll(pageable);
+    }
 
     private Direction ordernarPor(HttpServletRequest request) {
+
         String order = request.getParameter("order[0][dir]");
         Sort.Direction sort = Sort.Direction.ASC;
 

@@ -22,9 +22,15 @@ public interface PromocaoRepository extends JpaRepository<Promocao, Long> {
 	@Query("select p.likes from Promocao p where p.id = :id")
 	int findLikeById(@Param("id") Long id);
 
-	@Query("select distinct p.site from Promocao p where upper(p.site) like concat('%', upper(:site), '%')")
+	@Query("select distinct p.site from Promocao p "
+		+ "where upper(p.site) like concat('%', upper(:site), '%')")
 	List<String> findSiteByTermo(@Param("site") String site);
 
 	@Query("select p from Promocao p where p.site like :site")
 	Page<Promocao> findBySite(@Param("site") String site, Pageable pageable);
+
+	@Query("select p from Promocao p where "
+		+ "upper(p.titulo) like concat('%', upper(:search), '%') or "
+		+ "upper(p.site) like concat('%', upper(:search), '%')")
+	Page<Promocao> findByTituloOrSite(@Param("search") String search, Pageable pageable);
 }

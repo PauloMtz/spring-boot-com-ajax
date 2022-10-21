@@ -32,7 +32,8 @@ public interface PromocaoRepository extends JpaRepository<Promocao, Long> {
 
 	@Query("select p from Promocao p where "
 		+ "upper(p.titulo) like concat('%', upper(:search), '%') or "
-		+ "upper(p.site) like concat('%', upper(:search), '%')")
+		+ "upper(p.site) like concat('%', upper(:search), '%') or "
+		+ "upper(p.categoria.titulo) like concat('%', upper(:search), '%')")
 	Page<Promocao> findByTituloOrSite(@Param("search") String search, Pageable pageable);
 
 	@Query("select p from Promocao p where p.preco = :preco")

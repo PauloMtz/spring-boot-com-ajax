@@ -74,6 +74,22 @@ $(document).ready(function() {
         }
     });
 
+    $("#btn-del-modal").on("click", function() {
+        var id = getPromoId();
+
+        $.ajax({
+            method: "GET",
+            url: "/promocao/excluir/" + id,
+            success: function() {
+                $("#modal-delete").modal("hide");
+                table.ajax.reload();
+            },
+            error: function() {
+                alert("Ocorreu um erro, tente novamente mais tarde.");
+            }
+        });
+    });
+
     function getPromoId() {
         return table.row(table.$("tr.selected")).data().id;
     }

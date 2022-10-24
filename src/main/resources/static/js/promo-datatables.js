@@ -1,7 +1,7 @@
 $(document).ready(function() {
     moment.locale('pt-br');
     
-    $("#table-server").DataTable({
+    var table = $("#table-server").DataTable({
         processing: true,
         serverSide: true,
         responsive: true,
@@ -31,32 +31,44 @@ $(document).ready(function() {
                 attr: {
                     id: 'btn-editar',
                     type: 'button'
-                }
+                },
+                enabled: false
             },
             {
                 text: 'Excluir',
                 attr: {
                     id: 'btn-excluir',
                     type: 'button'
-                }
+                },
+                enabled: false
             }
         ]
     });
 
+    // ação de desabilitar botoões ao ordernar linhas
+    $("#table-server thead").on("click", "tr", function() {
+        table.buttons().disable();
+    });
+
+    // ação de marcar/desmarcar linhas
     $("#table-server tbody").on("click", "tr", function() {
         if ($(this).hasClass("selected")) {
             $(this).removeClass("selected");
+            table.buttons().disable();
         } else {
             $("tr.selected").removeClass("selected");
             $(this).addClass("selected");
+            table.buttons().enable();
         }
     });
 
     $("#btn-editar").on("click", function() {
-        alert("Clicou no botão Editar");
+        var id = table.row(table.$("tr.selected")).data().id;
+        alert("Clicou no botão Editar do ID " + id);
     });
 
     $("#btn-excluir").on("click", function() {
-        alert("Clicou no botão Excluir");
+        var id = table.row(table.$("tr.selected")).data().id;
+        alert("Clicou no botão Excluir do ID " + id);
     });
 });

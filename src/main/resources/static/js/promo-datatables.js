@@ -63,12 +63,25 @@ $(document).ready(function() {
     });
 
     $("#btn-editar").on("click", function() {
-        var id = table.row(table.$("tr.selected")).data().id;
-        alert("Clicou no botão Editar do ID " + id);
+        if (isSelectedRow()) {
+            var id = getPromoId();
+            alert("Clicou no botão Editar do ID " + id);
+        }
     });
 
     $("#btn-excluir").on("click", function() {
-        var id = table.row(table.$("tr.selected")).data().id;
-        alert("Clicou no botão Excluir do ID " + id);
+        if (isSelectedRow()) {
+            var id = getPromoId();
+            alert("Clicou no botão Excluir do ID " + id);
+        }
     });
+
+    function getPromoId() {
+        return table.row(table.$("tr.selected")).data().id;
+    }
+
+    function isSelectedRow() {
+        var t_row = table.row(table.$("tr.selected"));
+        return t_row.data() !== undefined;
+    }
 });

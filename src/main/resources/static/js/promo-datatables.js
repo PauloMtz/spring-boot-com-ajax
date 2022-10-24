@@ -64,15 +64,13 @@ $(document).ready(function() {
 
     $("#btn-editar").on("click", function() {
         if (isSelectedRow()) {
-            var id = getPromoId();
-            alert("Clicou no botão Editar do ID " + id);
+            $("#modal-form").modal("show");
         }
     });
 
     $("#btn-excluir").on("click", function() {
         if (isSelectedRow()) {
-            var id = getPromoId();
-            alert("Clicou no botão Excluir do ID " + id);
+            $("#modal-delete").modal("show");
         }
     });
 

@@ -61,6 +61,12 @@ public class PromocaoController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/editar/{id}")
+    public ResponseEntity<?> carregarFormEdicao(@PathVariable("id") Long id) {
+        Promocao promo = promocaoRepository.findById(id).get();
+        return ResponseEntity.ok(promo);
+    }
+
     @GetMapping("/site")
     public ResponseEntity<?> autocompleteByTermo(@RequestParam("termo") String termo) {
         List<String> sites = promocaoRepository.findSiteByTermo(termo);

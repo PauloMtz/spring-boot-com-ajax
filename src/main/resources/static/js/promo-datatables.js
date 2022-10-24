@@ -23,6 +23,31 @@ $(document).ready(function() {
                 return moment(dataCadastro).format('LLL')
             }},
             {data: 'categoria.titulo'},
+        ],
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                text: 'Editar',
+                attr: {
+                    id: 'btn-editar',
+                    type: 'button'
+                }
+            },
+            {
+                text: 'Excluir',
+                attr: {
+                    id: 'btn-excluir',
+                    type: 'button'
+                }
+            }
         ]
+    });
+
+    $("#btn-editar").on("click", function() {
+        alert("Clicou no botão Editar");
+    });
+
+    $("#btn-excluir").on("click", function() {
+        alert("Clicou no botão Excluir");
     });
 });

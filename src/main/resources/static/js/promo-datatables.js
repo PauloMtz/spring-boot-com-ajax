@@ -62,6 +62,7 @@ $(document).ready(function() {
         }
     });
 
+    // abre o modal de edição
     $("#btn-editar").on("click", function() {
         if (isSelectedRow()) {
             var id = getPromoId();
@@ -70,6 +71,11 @@ $(document).ready(function() {
                 method: "GET",
                 url: "/promocao/editar/" + id,
                 beforeSend: function() {
+                    // remove mensagens se houver
+                    $("span").closest(".error-span").remove();
+
+                    // remove bordas vermelhas se houver
+                    $(".is-invalid").removeClass("is-invalid");
                     $("#modal-form").modal("show");
                 },
                 success: function(data) {
@@ -94,12 +100,14 @@ $(document).ready(function() {
         }
     });
 
+    // carrega modal de confirmação de exclusão
     $("#btn-excluir").on("click", function() {
         if (isSelectedRow()) {
             $("#modal-delete").modal("show");
         }
     });
 
+    // botão de confirma exclusão no modal
     $("#btn-del-modal").on("click", function() {
         var id = getPromoId();
 
@@ -114,6 +122,55 @@ $(document).ready(function() {
                 alert("Ocorreu um erro, tente novamente mais tarde.");
             }
         });
+    });
+
+    // edita os dados através do modal
+    $("#btn-edit-modal").on("click", function() {
+
+        // recebe os dados do formulário e armazena na variável promo
+        var promo = {};
+        promo.descricao = $("#edt_descricao").val();
+        promo.preco = $("#edt_preco").val();
+        promo.titulo = $("#edt_titulo").val();
+        promo.categoria = $("#edt_categoria").val();
+        promo.linkImagem = $("#edt_linkImagem").val();
+        promo.id = $("#edt_id").val();
+
+        $.ajax({
+            method: "POST",
+            url: "/promocao/editar",
+            data: promo,
+                beforeSend: function() {
+                // removendo as mensagens
+                $("span").closest(".error-span").remove();
+
+                // removendo as bordas vermelhas
+                $(".is-invalid").removeClass("is-invalid");
+            },
+            success: function() {
+                $("#modal-form").modal("hide");
+                table.ajax.reload();
+            },
+            statusCode: {
+                422: function(xhr) {
+                    console.log(">>> Status error: ", xhr.status);
+                    var errors = $.parseJSON(xhr.responseText);
+                    $.each(errors, function(key, val) {
+                        $("#edt_" + key).addClass("is-invalid");
+                        $("#error-" + key)
+                            .addClass("invalid-feedback")
+                            .append("<span class='error-span'>" + val + "</span>");
+                    });
+                }
+            }
+        });
+    });
+
+    // altera a imagem
+    $("#edt_linkImagem").on("change", function() {
+        // esse $(this) se refere ao $("#edt_linkImagem")
+        var link = $(this).val();
+        $("#edt_linkImagem").attr("src", link);
     });
 
     function getPromoId() {

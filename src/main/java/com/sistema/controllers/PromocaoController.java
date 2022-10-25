@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sistema.domain.Categoria;
 import com.sistema.domain.Promocao;
+import com.sistema.dto.PromocaoDto;
 import com.sistema.repositories.CategoriaRepository;
 import com.sistema.repositories.PromocaoRepository;
 import com.sistema.services.PromocaoDatatableService;
@@ -65,6 +66,31 @@ public class PromocaoController {
     public ResponseEntity<?> carregarFormEdicao(@PathVariable("id") Long id) {
         Promocao promo = promocaoRepository.findById(id).get();
         return ResponseEntity.ok(promo);
+    }
+
+    @PostMapping("/editar")
+    public ResponseEntity<?> editarPromocao(@Valid PromocaoDto dto, BindingResult result) {
+
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+
+            for (FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+
+            return ResponseEntity.unprocessableEntity().body(errors);
+        }
+
+        Promocao promo = promocaoRepository.findById(dto.getId()).get();
+        promo.setCategoria(dto.getCategoria());
+        promo.setDescricao(dto.getDescricao());
+        promo.setLinkImagem(dto.getLinkImagem());
+        promo.setPreco(dto.getPreco());
+        promo.setTitulo(dto.getTitulo());
+
+        promocaoRepository.save(promo);
+        
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/site")
